@@ -1,0 +1,36 @@
+import java.util.*;
+class Main {
+
+    /*
+     * 2022.05.25 - 문호환
+     * 거리 계산 수학적 추론
+     * @param
+     * @return
+     */
+
+    public static void main(String[] args) {
+        // 이동 거리 - K , 이동 전 지점 - X , 이동 후 지점 - Y
+        // Y전 마지막 distance = 1
+        // 0 ≤ x < y < 2^31
+
+        Scanner in = new Scanner(System.in);
+
+        int TestCase = in.nextInt(); // 테스트 케이스 갯수 정의
+
+        for(int i=0; i<TestCase; i++) {
+            int X = in.nextInt(); // X 거리 정의
+            int Y = in.nextInt(); // Y 거리 정의
+
+            int K = Y - X; // 이동거리 K 정의
+
+            int max = (int)Math.sqrt(K); // 소숫점 버림 형태의 루트 값 반환
+
+            if(max == Math.sqrt(K))
+                System.out.println(max * 2 - 1); // Count(횟수) 수식
+            else if(K <= max * max + max)
+                System.out.println(max * 2); // 제곱근 = 루트(거리) 이후 ~ max
+            else
+                System.out.println(max * 2 + 1); // 이후 Count
+        }
+    }
+}
