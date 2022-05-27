@@ -1,0 +1,83 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+class Main {
+
+    /*
+     * 2022.05.27 - 문호환
+     * 제곱수 찾기
+     * @param
+     * @return
+     */
+
+    static int[][] table; // 표 정의
+    static int N, M;     // 행, 열 정의
+    static int result = -1; // 결과 정의 (제곱근을 만들 수 없는 경우 -1)
+
+    public static void main(String[] args) throws IOException {
+        // 행 : N , 열 : M
+        // input value = 행, 열이 등차 수열을 이루어야함
+        // 수를 이어 붙여 정수로 도출 -> 제곱수 출력
+        // 제곱근을 만들 수 없는 경우 - 1 출력
+        // 표에 적힌 숫자 0 <= x <= 9
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stn = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(stn.nextToken());
+        M = Integer.parseInt(stn.nextToken());
+
+        String[] arr = new String[N+1];
+        table = new int[N][M];
+
+        //입력 값 Table 화
+        for(int i=0; i<N; i++) {
+            arr[i] = br.readLine();
+            for(int j=0; j<M; j++) {
+                table[i][j] = arr[i].charAt(j) - '0'; // 표에 적힌 숫자 1의 자리
+            }
+        }
+
+        // 시작행, 열 정의
+        // 공차에 따라 제곱수 생성, 판별(최댓값)
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<M; j++){
+                squareRoot(j, i);
+            }
+        }
+        System.out.println(result);
+    }
+
+    /*
+     * 2022.05.27 - 문호환
+     * @method 제곱수 생성
+     * @param w, z
+     * @return void (실사용 result)
+     */
+    public static void squareRoot(int w, int z) {
+        for(int i=-N; i<N; i++) {
+            for(int j=-M; j<M; j++) {
+                if(i==0 && j==0) continue; // 행,열 같은 값 제외
+                int sqr = 0; // 제곱수
+
+                int x = w; // 제한된 열 시작
+                int y = z; // 제한된 행 시작
+                // 제한된 행, 열 범위 체크
+                while(0<=x && x<M && 0<=y && y<N) {
+                    sqr *= 10;
+                    sqr += table[y][x];
+
+                    int sqrR = (int)Math.sqrt(sqr); //제곱근
+
+                    // 제곱근 판별
+                    if(Math.pow(sqrR, 2) == sqr)
+                        result = Math.max(result, sqr); // 판별(최댓값)
+
+                    x += j;
+                    y += i;
+                }
+            }
+        }
+    }
+}
