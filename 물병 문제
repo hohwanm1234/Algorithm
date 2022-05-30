@@ -1,0 +1,47 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+class Main {
+
+    /*
+     * 2022.05.30 - 문호환
+     * 물병 문제
+     * @param
+     * @return
+     */
+
+    static int N, K; // 전체 물병 : N , 계산된 물병 : K
+    static int result; // 결과
+
+    public static void main(String[] args) throws IOException {
+        // 전체 물병 : N , 계산된 물병 : K
+        // N <= 10^7, K <= 1000
+        // 1. N=2: [1, 1] -> [2] 한병
+        // 2. N=3: [1, 1, 1] -> [2, 1] 두병
+        // 3. N=4: [1, 1, 1, 1] -> [2, 2] -> [4] 한병
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stn = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(stn.nextToken());
+        K = Integer.parseInt(stn.nextToken());
+
+        while(true) {
+            char[] binary = Integer.toBinaryString(N).toCharArray();
+            int cnt = 0;
+
+            for(int i=0; i<binary.length; i++) {
+                if(binary[i] == '1') {
+                    cnt++;
+                }
+            }
+            if(cnt <= K) {
+                System.out.println(result);
+                break;
+            }
+            N++;
+            result++;
+        }
+    }
+}
