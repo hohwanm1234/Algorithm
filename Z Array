@@ -1,0 +1,65 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+class Main {
+
+    /*
+     * 2022.05.31 - 문호환
+     * Z 문제 (재귀)
+     * @param
+     * @return
+     */
+
+    static int N, R, C; // 행렬의 차수 : N , 행 : R, 열 : C
+    static int result; // 결과
+
+    public static void main(String[] args) throws IOException {
+        // 전체 물병 : N , 계산된 물병 : K
+        // 1 ≤ N ≤ 15, 0 ≤ r, c < 2^N
+        // 1. 4등분 하여 Z순서대로 반복
+        // 2. 각 상위 등분된 필드 위치 확인
+        // 3. 각 4등분 필드 위치에 따른 Case 정의 후 size가 1이 되는 값 도출 (변의크기가 1)
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stn = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(stn.nextToken());
+        R = Integer.parseInt(stn.nextToken());
+        C = Integer.parseInt(stn.nextToken());
+        int size = (int)Math.pow(2, N); // 변의 크기
+
+        Z(size, R, C);
+        System.out.println(result);
+    }
+
+
+    /*
+     * 2022.05.31 - 문호환
+     * @method 4등분 필드 위치에 따른 Case 정의 후 size 값 1이 되는 값 도출
+     * @param size, R, C
+     * @return void (실사용 result)
+     */
+
+    public static void Z(int size, int R, int C) {
+
+        if (size == 1)
+            return;
+
+        if(R < size/2 && C < size/2) {
+            Z(size/2, R, C);
+        }
+        else if(R < size/2 && C >= size/2) {
+            result += (size*size/4);
+            Z(size/2, R, C-size/2);
+        }
+        else if(R >= size/2 && C <size/2) {
+            result += (size*size/4)*2;
+            Z(size/2, R-size/2, C);
+        }
+        else{
+            result += (size*size/4)*3;
+            Z(size/2, R-size/2, C-size/2);
+        }
+    }
+}
