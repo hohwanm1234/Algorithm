@@ -1,0 +1,85 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+class Main {
+
+    /*
+     * 2022.06.02 - 문호환
+     * 행렬 뒤집기(그리디 알고리즘)
+     * @param
+     * @return
+     */
+
+    static int N, M; // 행 : N, 열 : M
+    static int[][] aArr, bArr; // A 행렬
+    static int minCnt = 0; // 변환 최소 횟수
+
+    public static void main(String[] args) throws IOException {
+        // 행렬의 크기 - 행 : N , 열 : M
+        // 0 ≤ N, M ≤ 50 (자연수)
+        // 1. 3X3의 부분 행렬 뒤집기
+        // 2. 비교는 N-3, M-3까지 (이후엔 행렬 크기를 초과)
+        // 3. 계속 비교하며 뒤집기 반복 (범위가 벗어남 - 뒤집을수 없는경우 -> -1)
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] stn = br.readLine().split(" ");
+
+        N = Integer.parseInt(stn[0]);
+        M = Integer.parseInt(stn[1]);
+        aArr = new int[N][M];
+        bArr = new int[N][M];
+
+        // A행렬 특정 문자 추출
+        for(int i=0; i<N; i++) {
+            String str = br.readLine();
+            for(int j=0; j<M; j++) {
+                aArr[i][j] = str.charAt(j) - '0';
+            }
+        }
+        // B행렬 특정 문자 추출
+        for(int i=0; i<N; i++) {
+            String str = br.readLine();
+            for(int j=0; j<M; j++) {
+                bArr[i][j] = str.charAt(j) - '0';
+            }
+        }
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<M; j++) {
+                if(aArr[i][j] != bArr[i][j]) {
+                    if(rollover(i, j)) {
+                        minCnt++;
+                    }else {
+                        System.out.println("-1");
+                        return;
+                    }
+                }
+            }
+        }
+        System.out.println(minCnt);
+    }
+
+
+    /*
+     * 2022.06.02 - 문호환
+     * @method rollover (인덱스 비교 후 숫자 뒤집음)
+     * @param i, j
+     * @return boolean
+     */
+
+    public static boolean rollover(int row, int col) {
+
+        if(row+3 > N || col+3 > M)
+            return false;
+
+        for(int i=row; i<row+3; i++) {
+            for(int j=col; j<col+3; j++) {
+                if(aArr[i][j] == 0)
+                    aArr[i][j] = 1;
+                else
+                    aArr[i][j] = 0;
+            }
+        }
+        return true;
+    }
+}
