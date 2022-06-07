@@ -1,0 +1,40 @@
+import java.util.*;
+
+class Main {
+
+    /*
+     * 2022.06.07 - 문호환
+     * 문자 찾기 (main)
+     * @param
+     * @return
+     */
+
+    static int result = 0; // 결과값
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String str = sc.next();
+        char a = sc.next().charAt(0);
+
+        System.out.println(Find(str, a));
+    }
+
+    /*
+     * 2022.06.07 - 문호환
+     * 문자 찾기
+     * 문자를 모두 대or소문자로 변경 후 반복문을 통해 검색
+     * @param str, a
+     * @return result
+     */
+    public static int Find(String str, char a){
+        str = str.toLowerCase();
+        a = Character.toLowerCase(a);
+
+        for(char i : str.toCharArray()) {
+            if(i == a)
+                result++;
+        }
+
+        return result;
+    }
+}
