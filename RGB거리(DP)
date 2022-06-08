@@ -1,0 +1,49 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+
+    /*
+     * 2022.06.08 - 문호환
+     * RGB 거리 (main)
+     * @param
+     * @return
+     */
+
+    static int Red = 0;
+    static int Green = 1;
+    static int Blue = 2;
+    static int result = 0; // 결과값
+
+    public static void main(String[] args) throws IOException {
+        // 1번 집의 색은 2번 집의 색과 같지 않아야 한다.
+        // N번 집의 색은 N-1번 집의 색과 같지 않아야 한다.
+        // i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
+        // N(2 ≤ N ≤ 1,000)
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        int A = Integer.parseInt(br.readLine());
+        int[][] Cost = new int[A][3];
+
+        for(int i=0; i<A; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+
+            Cost[i][Red] = Integer.parseInt(st.nextToken());
+            Cost[i][Green] = Integer.parseInt(st.nextToken());
+            Cost[i][Blue] = Integer.parseInt(st.nextToken());
+        }
+        // 최소값 누적하여 합산
+        for(int i=1; i<A; i++) {
+            Cost[i][Red] += Math.min(Cost[i-1][Green], Cost[i-1][Blue]);
+            Cost[i][Green] += Math.min(Cost[i-1][Red], Cost[i-1][Blue]);
+            Cost[i][Blue] += Math.min(Cost[i-1][Red], Cost[i-1][Green]);
+        }
+
+        result = Math.min(Math.min(Cost[A-1][Red], Cost[A-1][Green]), Cost[A-1][Blue]);
+        System.out.println(result);
+    }
+
+
+}
