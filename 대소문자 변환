@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+
+class Main {
+
+    /*
+     * 2022.06.09 - 문호환
+     * 대소문자 변환 (main)
+     * @param
+     * @return
+     */
+
+    static String input, output = "";
+
+    public static void main(String[] args)  {
+        // 대문자 -> 소문자
+        // 소문자 -> 대문자
+
+        Scanner sc = new Scanner(System.in);
+        input = sc.next();
+        output = ConVersion(input);
+
+        System.out.println(output);
+    }
+
+    /*
+     * 2022.06.09 - 문호환
+     * 대소문자 변환
+     * 입력 받은 값의 length 확인 후 대소문자 변환
+     * @param input
+     * @return result
+     */
+    public static String ConVersion(String input){
+        String result = "";
+        for (char temp : input.toCharArray()){
+            if(Character.isLowerCase(temp))
+                result+=Character.toUpperCase(temp);
+            else
+                result+=Character.toLowerCase(temp);
+        }
+        return result;
+    }
+}
