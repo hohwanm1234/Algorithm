@@ -1,0 +1,63 @@
+import java.util.*;
+
+class Main {
+
+    /*
+     * 2022.06.10 - 문호환
+     * 컴백홈 (main) - 백트래킹 -> 추후 BFS 사용
+     * @param
+     * @return
+     */
+
+    static int R,C,K,count;
+    static int[] x = {0,1,0,-1};
+    static int[] y = {1,0,-1,0};
+    static char[][] graph;
+
+    public static void main(String[] args)  {
+        // 1 - R(1 ≤ R ≤ 5), C(1 ≤ C ≤ 5), K(1 ≤ K ≤ R×C)
+        // 2~R+1 - . , T  -> C
+
+        Scanner sc = new Scanner(System.in);
+        R = sc.nextInt();
+        C = sc.nextInt();
+        K = sc.nextInt();
+        sc.nextLine();
+
+        graph = new char[R][C];
+
+        for(int i=0; i<R; i++) {
+            graph[i] = sc.nextLine().toCharArray();
+        }
+
+        Back(0, new int[] {R-1, 0});
+        System.out.println(count);
+    }
+
+    /*
+     * 2022.06.10 - 문호환
+     * 컴백홈
+     * 재귀를 사용하여 백트래킹(모든 경우의 수 탐색)
+     * @param depth, arr
+     * @return
+     */
+    public static void Back(int depth, int[] arr){
+        if(depth == K-1) {
+            if(arr[0]==0 && arr[1]==C-1) {
+                if(arr[0]==0 && arr[1]==C-1) {
+                    count++;
+                }
+                return;
+            }
+        }
+        for(int i=0; i<4; i++) {
+            int nx = arr[0]+x[i];
+            int ny = arr[1]+y[i];
+            if(0<=nx && nx<R && 0<=ny && ny<C && graph[nx][ny] != 'T') {
+                graph[arr[0]][arr[1]] = 'T';
+                Back(depth+1, new int[]{nx,ny});  // 재귀
+                graph[arr[0]][arr[1]] = '.';
+            }
+        }
+    }
+}
