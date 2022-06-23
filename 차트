@@ -1,0 +1,115 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+class Main {
+
+    /*
+     * 2022.06.23 - 문호환
+     * 차트 (main)
+     * @param
+     * @return
+     */
+
+    static int N, MAX; // 반의 갯수, 원의 중심을 지나는 선의 최댓값
+    static int[] arr; // 각 반에서 개를 키우는 사람의 수
+    static boolean[] visit; // 원형에서 arr을 통해 분할된 만나는 선의 갯수
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        String[] inputArr = br.readLine().split(" ");
+
+        if(N == 1){
+            System.out.println(0);
+            return;
+        }
+
+        arr = new int[N];
+        visit = new boolean[N];
+
+        for(int i=0; i<N; i++){
+            arr[i] = Integer.parseInt(inputArr[i]);
+        }
+
+        MAX = DFS(new int[N], 0);
+        System.out.println(MAX);
+    }
+
+    /*
+     * 2022.06.10 - 문호환
+     * 차트
+     * DFS를 사용하여 원 분할 선 찾기
+     * @param a, idx
+     * @return result
+     */
+    public static int DFS(int[] a, int idx){
+        int result=0;
+        if(idx == N){
+            return getCnt(a);
+        } else {
+            for(int i=0; i<N; i++) {
+                if(visit[i]){
+                    continue;
+                }
+                visit[i] = true;
+                a[idx] = arr[i];
+                result = Math.max(result, DFS(a, idx+1));
+                visit[i] = false;
+            }
+        }
+        return result;
+    }
+
+    /*
+     * 2022.06.10 - 문호환
+     * 차트
+     * 중앙선 선의 갯수 새기
+     * @param arr
+     * @return cnt
+     */
+    public static int getCnt(int[] arr){
+        int mid = getMid(arr);
+        int cnt = 0, s = 0, e = 0;
+        int sumnum = arr[0];
+
+        while(s<=mid && e<=N-1 && s<=e){
+            if(sumnum == 50){
+                cnt++;
+                sumnum -= arr[s++];
+                if(e+1 < N){
+                    sumnum += arr[++e];
+                }
+            } else if (sumnum < 50) {
+                if(e+1 < N){
+                    sumnum += arr[++e];
+                }
+            } else {
+                sumnum -= arr[s++];
+            }
+        }
+        return cnt;
+    }
+
+    /*
+     * 2022.06.10 - 문호환
+     * 차트
+     * 중앙선 나누기
+     * @param arr
+     * @return i
+     */
+    public static int getMid(int[] arr){
+        int sum = 0;
+        for(int i=0; i<N; i++){
+            sum += arr[i];
+            if(sum >= 50){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+}
