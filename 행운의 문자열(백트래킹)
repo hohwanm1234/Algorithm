@@ -1,0 +1,78 @@
+import java.util.*;
+
+class Main {
+
+    /*
+     * 2022.08.01 - 문호환
+     * 행운의 문자열 (main)
+     * 백트래킹
+     * @param
+     * @return
+     */
+    static boolean[] visited;
+    static String str;
+    static int strLen;
+    static int result = 0;
+    static Set<String> resultSet = new HashSet<String>();
+    static char[] CharArr;
+    static Map<Character, Integer> map = new HashMap<>();
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        str = sc.next();
+        CharArr = str.toCharArray();
+        strLen = str.length();
+        visited = new boolean[strLen];
+
+        for(int i=0; i<strLen; i++) {
+            if(map.getOrDefault(CharArr[i], null) == null){
+                map.put(CharArr[i], 1);
+            } else {
+                int getValue = map.get(CharArr[i]);
+                map.replace(CharArr[i], getValue + 1);
+            }
+        }
+
+        for(int i=0; i<strLen; i++) {
+            visited[i] = true;
+            LcukyString("" + CharArr[i]);
+            visited[i] = false;
+        }
+
+        Iterator<Character> itr = map.keySet().iterator();
+        while (itr.hasNext()) {
+            char value = itr.next();
+            int v = map.get(value);
+            int factorial = 1;
+            for(int i=1; i<=v; i++) {
+               factorial *= i;
+            }
+            result /= factorial;
+        }
+        System.out.println(result);
+    }
+
+    /*
+     * 2022.08.01 - 문호환
+     * 재귀
+     * @param st
+     * @return
+     */
+
+    public static void LcukyString(String st) {
+        if(st.length() == strLen){
+            result++;
+        }
+        for(int i=0; i<strLen; i++) {
+            if(visited[i]) {
+                continue;
+            }
+            if(st.charAt(st.length()-1) == CharArr[i]) {
+                continue;
+            }
+            visited[i] = true;
+            LcukyString(st + CharArr[i]);
+            visited[i] = false;
+        }
+    }
+}
