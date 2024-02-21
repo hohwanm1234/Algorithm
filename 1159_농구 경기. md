@@ -1,0 +1,52 @@
+```java
+
+package org.example;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+/**
+ * <pre>
+ *     농구 경기
+ * </pre>
+ *
+ * @author 문호환
+ * @since 2024-02-21
+ */
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int count = Integer.parseInt(br.readLine());
+        char[] charArr = new char[count];
+        String result = "";
+
+        for (int i = 0; i < count; i++) {
+            charArr[i] = br.readLine().charAt(0);
+        }
+
+        Arrays.sort(charArr);
+
+        for (int i = 0; i < count - 1; i++) {
+            int cnt = 0;
+            for (int j = (i + 1); j < count; j++) {
+                if (charArr[i] == charArr[j] && charArr[i] != '0') { // 중복 제거
+                    cnt++;
+                    charArr[j] = '0';
+                }
+            }
+            if (cnt > 3) {
+                result += charArr[i];
+            }
+        }
+        if (result.equals(""))
+            System.out.println("PREDAJA");
+        else
+            System.out.println(result);
+    }
+}
+
+```
